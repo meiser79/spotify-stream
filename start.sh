@@ -13,7 +13,7 @@ service icecast2 start
 echo -e $separator
 
 echo "🧊 starting darkice"
-su - doggo -c "darkice -c /home/doggo/.config/darkice/darkice.cfg & sleep 2 && disown"
+su - doggo -c "darkice -c /etc/darkice.cfg & sleep 2 && disown"
 
 echo -e $separator
 
