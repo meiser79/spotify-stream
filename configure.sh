@@ -14,5 +14,10 @@ done
 echo "🔑 updating darkice credentials"
 sed -i -r "s/^password.*$/password = $ICECAST_PASSWORD/" /etc/darkice.cfg 
 
+echo "🔨 updating darkice config"
+sed -i -r "s/^mountPoint.*$/mountPoint = $DARKICE_MOUNT_POINT/" /etc/darkice.cfg
+sed -i -r "s/^name.*$/name = $DARKICE_NAME/" /etc/darkice.cfg
+sed -i -r "s/^description.*$/description = $DARKICE_DESCRIPTION/" /etc/darkice.cfg
+
 echo "🌊 configuration done"
 echo -e "\n---------------------\n"
