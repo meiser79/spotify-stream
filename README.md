@@ -19,8 +19,12 @@ services:
     - SPOTIFY_DEVICE_NAME=Daemon
     # possible values: audiodongle, avr, computer, smartphone, speaker, stb, tablet, tv
     - SPOTIFY_DEVICE_TYPE=computer
+    - SPOTIFY_CACHE=/spotify-stream/cache
     - SPOTIFY_INITIAL_VOLUME=90
     - SPOTIFY_ZEROCONF_PORT=1234
+    - ICECAST_ADMIN=contact@domain.com
+    - ICECAST_HOSTNAME=my.ip.address
+    - ICECAST_LOCATION=New\ York
     - ICECAST_USERNAME=admin
     - ICECAST_PASSWORD=spotify
     - DARKICE_MOUNT_POINT=spotify
@@ -29,6 +33,8 @@ services:
     image: meiser79/spotify-stream:latest
     network_mode: host
     restart: unless-stopped
+    volumes:
+    - ./cache:/spotify-stream/cache
 ```
 
 Then connect to the stream via `http://my.ip.address:8000/spotify`.
