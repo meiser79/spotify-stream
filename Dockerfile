@@ -6,16 +6,18 @@ RUN apt update && apt upgrade -y \
  && apt install -y \
     darkice \
     icecast2 \
+    iproute2 \
     pulseaudio \
+    wget \
  && apt clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
 
 COPY darkice.cfg /etc/darkice.cfg
 
-COPY spotifyd.conf /etc/spotifyd.conf
+COPY librespot.conf /etc/librespot.conf
 
-COPY spotifyd /usr/local/bin/spotifyd
-RUN chmod +x /usr/local/bin/spotifyd
+COPY librespot /usr/local/bin/librespot
+RUN chmod +x /usr/local/bin/librespot
 
 COPY configure.sh /usr/local/bin/configure.sh
 RUN chmod +x /usr/local/bin/configure.sh

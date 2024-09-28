@@ -17,5 +17,10 @@ su - ubuntu -c "darkice -c /etc/darkice.cfg & sleep 2 && disown"
 
 echo -e $separator
 
-echo "🎵 starting spotifyd"
-su - ubuntu -c "spotifyd --no-daemon --config-path=/etc/spotifyd.conf"
+echo "🔨 updating icecast's metadata"
+wget -q -O - --user $ICECAST_USERNAME --password $ICECAST_PASSWORD http://localhost:8000/admin/metadata?mount=/$DARKICE_MOUNT_POINT\&mode=updinfo\&song="${DARKICE_NAME/\\/}"
+
+echo -e $separator
+
+echo "🎵 starting librespot"
+su - ubuntu -c "librespot --name $LIBRESPOT_DEVICE_NAME --device-type $LIBRESPOT_DEVICE_TYPE --backend pulseaudio --bitrate 320 --cache $LIBRESPOT_CACHE --disable-audio-cache --enable-volume-normalisation --initial-volume $LIBRESPOT_INITIAL_VOLUME --zeroconf-port $LIBRESPOT_ZEROCONF_PORT --autoplay off"

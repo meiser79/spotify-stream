@@ -1,5 +1,12 @@
 #!/bin/bash
 
+echo "🔑 updating icecast config"
+
+sed -i -r "s/(<admin>).*(<\\/admin>)/\1$ICECAST_ADMIN\2/ig" /etc/icecast2/icecast.xml
+sed -i -r "s/(<hostname>).*(<\\/hostname>)/\1$ICECAST_HOSTNAME\2/ig" /etc/icecast2/icecast.xml
+sed -i -r "s/(<location>).*(<\\/location>)/\1$ICECAST_LOCATION\2/ig" /etc/icecast2/icecast.xml
+sed -i -r "s/(<burst-on-connect>).*(<\\/burst-on-connect>)/\10\2/ig" /etc/icecast2/icecast.xml
+
 echo "🔑 updating icecast credentials"
 
 # update username
@@ -19,11 +26,11 @@ sed -i -r "s/^mountPoint.*$/mountPoint = $DARKICE_MOUNT_POINT/" /etc/darkice.cfg
 sed -i -r "s/^name.*$/name = $DARKICE_NAME/" /etc/darkice.cfg
 sed -i -r "s/^description.*$/description = $DARKICE_DESCRIPTION/" /etc/darkice.cfg
 
-echo "🔨 updating spotifyd config"
-sed -i -r "s/^device_name.*$/device_name = \"$SPOTIFY_DEVICE_NAME\"/" /etc/spotifyd.conf
-sed -i -r "s/^device_type.*$/device_type = \"$SPOTIFY_DEVICE_TYPE\"/" /etc/spotifyd.conf
-sed -i -r "s/^initial_volume.*$/initial_volume = \"$SPOTIFY_INITIAL_VOLUME\"/" /etc/spotifyd.conf
-sed -i -r "s/^zeroconf_port.*$/zeroconf_port = $SPOTIFY_ZEROCONF_PORT/" /etc/spotifyd.conf
+#echo "🔨 updating librespot config"
+#sed -i -r "s/^LIBRESPOT_DEVICE_NAME.*$/LIBRESPOT_DEVICE_NAME=\"$LIBRESPOT_DEVICE_NAME\"/" /etc/librespot.conf
+#sed -i -r "s/^LIBRESPOT_DEVICE_TYPE.*$/LIBRESPOT_DEVICE_TYPE=\"$LIBRESPOT_DEVICE_TYPE\"/" /etc/librespot.conf
+#sed -i -r "s/^LIBRESPOT_INITIAL_VOLUME.*$/LIBRESPOT_INITIAL_VOLUME=\"$LIBRESPOT_INITIAL_VOLUME\"/" /etc/librespot.conf
+#sed -i -r "s/^LIBRESPOT_ZEROCONF_PORT.*$/LIBRESPOT_ZEROCONF_PORT=\"$LIBRESPOT_ZEROCONF_PORT\"/" /etc/librespot.conf
 
 echo "🌊 configuration done"
 echo -e "\n---------------------\n"
