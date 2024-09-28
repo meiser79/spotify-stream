@@ -1,31 +1,23 @@
-FROM ubuntu:latest
+FROM alpine:latest
 
-RUN usermod -aG audio ubuntu
-
-RUN apt update && apt upgrade -y \
- && apt install -y \
+RUN apk add --no-cache \
+    alsa-plugins-pulse \
+    bash \
     darkice \
-    icecast2 \
+    icecast \
+    mailcap \
     pulseaudio \
- && apt clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache /root/.cache
+    su-exec \
+    tini \
+    wget
 
-COPY darkice.cfg /etc/darkice.cfg
+RUN adduser -D -G audio -u 1000 user
 
-COPY spotifyd.conf /etc/spotifyd.conf
+COPY darkice.cfg /etc/darkice/darkice.cfg
+COPY librespot configure.sh entry.sh start.sh /usr/local/bin/
 
-COPY spotifyd /usr/local/bin/spotifyd
-RUN chmod +x /usr/local/bin/spotifyd
-
-COPY configure.sh /usr/local/bin/configure.sh
-RUN chmod +x /usr/local/bin/configure.sh
-
-COPY start.sh /usr/local/bin/start.sh
-RUN chmod +x /usr/local/bin/start.sh
-
-COPY entry.sh /usr/local/bin/entry.sh
-RUN chmod +x /usr/local/bin/entry.sh
+RUN chmod +x /usr/local/bin/*
 
 EXPOSE 8000
 
-ENTRYPOINT ["/usr/local/bin/entry.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/entry.sh"]
