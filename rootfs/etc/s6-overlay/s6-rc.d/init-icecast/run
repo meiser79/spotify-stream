@@ -1,0 +1,22 @@
+#!/usr/bin/with-contenv bash
+
+echo "🔑 updating icecast config"
+
+sed -i -r "s/(<admin>).*(<\\/admin>)/\1$ICECAST_ADMIN\2/ig" /etc/icecast2/icecast.xml
+sed -i -r "s/(<hostname>).*(<\\/hostname>)/\1$ICECAST_HOSTNAME\2/ig" /etc/icecast2/icecast.xml
+sed -i -r "s/(<location>).*(<\\/location>)/\1$ICECAST_LOCATION\2/ig" /etc/icecast2/icecast.xml
+sed -i -r "s/(<burst-on-connect>).*(<\\/burst-on-connect>)/\10\2/ig" /etc/icecast2/icecast.xml
+
+echo "🔑 updating icecast credentials"
+
+# update username
+sed -i -r "s/(<admin-user>).*(<\\/admin-user>)/\1$ICECAST_USERNAME\2/ig" /etc/icecast2/icecast.xml
+
+# update passwords
+for tag in source-password relay-password admin-password password
+do
+  sed -i -r "s/(<$tag>).*(<\\/$tag>)/\1$ICECAST_PASSWORD\2/ig" /etc/icecast2/icecast.xml
+done
+
+echo "🔨 updating icecast's metadata"
+wget -q -O - --user $ICECAST_USERNAME --password $ICECAST_PASSWORD http://localhost:8000/admin/metadata?mount=/$DARKICE_MOUNT_POINT\&mode=updinfo\&song="${DARKICE_NAME/\\/}"

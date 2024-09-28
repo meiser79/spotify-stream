@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+
+export HOME="$( getent passwd ubuntu | cut -d: -f6 )"
+exec s6-setuidgid ubuntu librespot --name $LIBRESPOT_DEVICE_NAME --device-type $LIBRESPOT_DEVICE_TYPE --backend pulseaudio --bitrate 320 --cache $LIBRESPOT_CACHE --disable-audio-cache --enable-volume-normalisation --initial-volume $LIBRESPOT_INITIAL_VOLUME --zeroconf-port $LIBRESPOT_ZEROCONF_PORT --autoplay off

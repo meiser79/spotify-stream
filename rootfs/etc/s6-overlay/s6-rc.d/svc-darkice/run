@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+
+export HOME="$( getent passwd ubuntu | cut -d: -f6 )"
+exec s6-setuidgid ubuntu darkice -c /etc/darkice.cfg
